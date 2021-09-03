@@ -1,0 +1,26 @@
+
+[Unit]
+Description=Puma HTTP Server
+After=network.target
+
+[Service]
+# Foreground process (do not use --daemon in ExecStart or config.rb)
+Type=simple
+
+# Preferably configure a non-privileged user
+User=deploy
+
+# The path to the puma application root
+WorkingDirectory=/home/deploy/studentdb/current
+
+# Helpful for debugging socket activation, etc.
+Environment=RAILS_ENV=production
+
+# The command to start Puma
+ExecStart=/home/deploy/.rbenv/shims/bundle exec puma
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
