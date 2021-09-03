@@ -6,14 +6,15 @@
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "4.3.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.2.2",
     "node-sass": "^6.0.1",
     "turbolinks": "^5.2.0"
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@babel/core": "^7.15.4",
+    "babel-loader": "^8.2.2",
     "webpack": "^5.51.2",
+    "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.1.0"
   }
 }
