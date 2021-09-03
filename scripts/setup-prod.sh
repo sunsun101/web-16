@@ -37,7 +37,7 @@ echo "Installing packages..."
 sudo apt-get install -y build-essential libpq-dev libreadline-dev \
     libssl-dev zlib1g-dev libyaml-dev git software-properties-common \
     curl apache2 postgresql libcurl4-openssl-dev apache2-dev libapr1-dev \
-    libaprutil1-dev > /dev/null
+    libaprutil1-dev python > /dev/null
 
 # Put database.yml in $DEPLOY_USER user's shared config directory if needed
 
@@ -73,8 +73,9 @@ which node > /dev/null || {
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   sudo apt-get update && sudo apt-get install -y yarn
 }
-echo "Configuring yarn for proxy server..."
+echo "Configuring yarn and npm for proxy server..."
 sudo su $DEPLOY_USER -c "yarn config set 'https-proxy' 'http://192.41.170.23:3128'" > /dev/null
+sudo su $DEPLOY_USER -c "npm config set proxy 'http://192.41.170.23:3128'" > /dev/null
 
 # Set up database user and database
 
@@ -127,7 +128,17 @@ grep rbenv /home/$DEPLOY_USER/.bashrc > /dev/null || {
   sudo su -c "echo 'rbenv global $RUBY_VERSION' >> /home/$DEPLOY_USER/.bashrc"
 }
 
-exit 0
+# Set up git proxying for gitlab.com
+
+if [ ! -f /home/$DEPLOY_USER/.ssh/config ] ; then
+  cat > /tmp/ssh-config <<EOF
+Host gitlab.com
+  ProxyCommand ssh \${BAZOOKA_USER}@bazooka.cs.ait.ac.th nc %h %p
+  ForwardAgent yes
+EOF
+  sudo mv /tmp/ssh-config /home/$DEPLOY_USER/.ssh/config
+  sudo chown -R $DEPLOY_USER.$DEPLOY_USER /home/deploy/.ssh
+fi
 
 # Set up application server (puma)
 
@@ -152,6 +163,7 @@ sudo stat /etc/letsencrypt/live/$SERVER/fullchain.pem > /dev/null || {
   sudo HTTPS_PROXY=$https_proxy certbot certonly
   sudo systemctl start apache2
 }
+
 cat > /tmp/apacheconfig.txt <<EOF
 <IfModule mod_ssl.c>
   <VirtualHost _default_:443>
