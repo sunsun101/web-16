@@ -6,8 +6,7 @@ set :repo_url, "git@gitlab.com:ait-wae-2021/web16/web16-app"
 set :rbenv_type, :user
 set :rbenv_ruby, '3.0.2'
 set :repo_tree, 'studentdb'
-
-
+set :branch, ENV['BRANCH'] ? ENV['BRANCH'] : 'main'
 
 append :linked_files, "config/database.yml", "config/master.key"
 
