@@ -157,6 +157,7 @@ sudo systemctl start puma.service
 # Set up Apache
 
 sudo a2enmod proxy > /dev/null
+sudo a2enmod headers > /dev/null
 sudo a2enmod proxy_http > /dev/null
 sudo a2enmod ssl > /dev/null
 
@@ -193,6 +194,7 @@ cat > /tmp/apacheconfig.txt <<EOF
     <Location /system>
       ProxyPass !
     </Location>
+    RequestHeader set X-Forwarded-Proto "https"
     ProxyPass / unix:///home/$DEPLOY_USER/$APP/shared/tmp/sockets/puma.sock|http://localhost/
     ProxyPassReverse / unix:///home/$DEPLOY_USER/$APP/shared/tmp/puma.sock|http://localhost/
   </VirtualHost>
