@@ -1,0 +1,12 @@
+
+AllCops:
+  NewCops: enable
+
+Metrics/BlockLength:
+  Exclude:
+    - 'db/schema.rb'
+    - 'config/environments/development.rb'
+
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/devise.rb'
