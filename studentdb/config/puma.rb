@@ -10,6 +10,7 @@ environment rails_env
 if rails_env == 'production'
   workers 2
   preload_app!
+  state_path 'tmp/sockets/puma.state'
   # Location of the control socket. Must be created in advance.
   app_dir = File.expand_path('..', __dir__)
   bind "unix://#{app_dir}/tmp/sockets/puma.sock"
