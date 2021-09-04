@@ -10,7 +10,7 @@ set :rbenv_ruby, '3.0.2'
 set :repo_tree, 'studentdb'
 set :branch, ENV['BRANCH'] || 'main'
 
-append :linked_files, 'config/database.yml', 'config/master.key'
+append :linked_files, 'config/database.yml', 'config/master.key', 'config/client_secrets.json', 'config/tokens.json'
 
 append :linked_dirs, 'log', 'tmp', 'public/system', 'public/assets', 'public/packs', '.bundle'
 

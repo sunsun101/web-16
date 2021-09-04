@@ -8,4 +8,4 @@ server 'web16', user: 'deploy', roles: %w[app db web]
 
 set :deploy_to, '/home/deploy/studentdb'
 
-# set :yarn_flags, '--production --silent --no-progress --network-timeout 1000000'
+set :yarn_flags, '--production --silent --no-progress --network-timeout 1000000'
