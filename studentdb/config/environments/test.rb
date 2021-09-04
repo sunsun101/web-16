@@ -48,7 +48,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :test
 
   # Default mailer url for Devise
-  config.action_mailer.default_url_options = { host: 'http://example.com' }
+  config.action_mailer.default_url_options = { host: 'example.com' }
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr

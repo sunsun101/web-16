@@ -65,7 +65,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Default mailer url for Devise
-  config.action_mailer.default_url_options = { host: 'http://web16.cs.ait.ac.th' }
+  config.action_mailer.default_url_options = { host: 'web16.cs.ait.ac.th' }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
