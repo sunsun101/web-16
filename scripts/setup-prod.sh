@@ -144,8 +144,10 @@ fi
 
 echo "Setting up puma service"
 sudo mkdir -p /home/$DEPLOY_USER/$APP/shared/tmp/sockets
+sudo mkdir -p /home/$DEPLOY_USER/$APP/shared/tmp/pids
 sudo chown $DEPLOY_USER.$DEPLOY_USER /home/$DEPLOY_USER/$APP/shared/tmp
 sudo chown $DEPLOY_USER.$DEPLOY_USER /home/$DEPLOY_USER/$APP/shared/tmp/sockets
+sudo chown $DEPLOY_USER.$DEPLOY_USER /home/$DEPLOY_USER/$APP/shared/tmp/pids
 sudo cp $APP/config/puma.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/puma.service
 sudo systemctl daemon-reload
