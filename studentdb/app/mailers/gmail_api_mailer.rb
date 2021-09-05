@@ -1,5 +1,26 @@
 # frozen_string_literal: true
 
+# Patch to the Google HTTP Actionmailer to fix bug in deliver! method
+class MailerDeliveryMethod < GoogleHttpActionmailer::DeliveryMethod
+  def deliver!(mail)
+    user_id = message_options[:user_id] || 'me'
+    message = Google::Apis::GmailV1::Message.new(
+      raw:       mail.to_s,
+      thread_id: mail['Thread-ID'].to_s
+    )
+    before_send = delivery_options[:before_send]
+    if before_send && before_send.respond_to?(:call)
+      before_send.call(mail, message)
+    end
+    # deliver! method in version 0.3.0 passes illegal 3rd option
+    message = service.send_user_message(user_id, message)
+    after_send = delivery_options[:after_send]
+    if after_send && after_send.respond_to?(:call)
+      after_send.call(mail, message)
+    end
+  end
+end
+
 # Mailer using the Gmail API
 class GmailApiMailer < Devise::Mailer
   helper :application
@@ -46,7 +67,7 @@ class GmailApiMailer < Devise::Mailer
       strategy = create_oauth_strategy
       new_token = create_new_oauth_token(strategy.client)
       authorization = Oauth2Authorization.new new_token
-      message.delivery_method(GoogleHttpActionmailer::DeliveryMethod, { authorization: authorization })
+      message.delivery_method(MailerDeliveryMethod, { authorization: authorization })
       message
     end
   end
