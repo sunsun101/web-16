@@ -194,6 +194,9 @@ cat > /tmp/apacheconfig.txt <<EOF
     <Location /system>
       ProxyPass !
     </Location>
+    <Location /favicon.ico>
+      ProxyPass !
+    </Location>
     RequestHeader set X-Forwarded-Proto "https"
     ProxyPass / unix:///home/$DEPLOY_USER/$APP/shared/tmp/sockets/puma.sock|http://localhost/
     ProxyPassReverse / unix:///home/$DEPLOY_USER/$APP/shared/tmp/puma.sock|http://localhost/

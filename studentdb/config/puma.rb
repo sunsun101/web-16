@@ -8,6 +8,8 @@ environment rails_env
 # If production mode, use two workers with preloaded application
 
 if rails_env == 'production'
+  ENV['https_proxy'] = 'http://192.41.170.23:3128'
+  ENV['http_proxy'] = 'http://192.41.170.23:3128'
   workers 2
   preload_app!
   state_path 'tmp/sockets/puma.state'
