@@ -5,19 +5,15 @@ class MailerDeliveryMethod < GoogleHttpActionmailer::DeliveryMethod
   def deliver!(mail)
     user_id = message_options[:user_id] || 'me'
     message = Google::Apis::GmailV1::Message.new(
-      raw:       mail.to_s,
+      raw: mail.to_s,
       thread_id: mail['Thread-ID'].to_s
     )
     before_send = delivery_options[:before_send]
-    if before_send && before_send.respond_to?(:call)
-      before_send.call(mail, message)
-    end
+    before_send.call(mail, message) if before_send.respond_to?(:call)
     # deliver! method in version 0.3.0 passes illegal 3rd option
     message = service.send_user_message(user_id, message)
     after_send = delivery_options[:after_send]
-    if after_send && after_send.respond_to?(:call)
-      after_send.call(mail, message)
-    end
+    after_send.call(mail, message) if after_send.respond_to?(:call)
   end
 end
 

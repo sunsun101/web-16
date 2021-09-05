@@ -2,10 +2,15 @@
 AllCops:
   NewCops: enable
 
+Metrics/AbcSize:
+  Exclude:
+    - 'app/mailers/gmail_api_mailer.rb'
+
 Metrics/BlockLength:
   Exclude:
     - 'db/schema.rb'
     - 'config/environments/development.rb'
+    - 'config/environments/production.rb'
 
 Layout/LineLength:
   Exclude:
