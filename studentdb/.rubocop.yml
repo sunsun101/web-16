@@ -15,3 +15,7 @@ Metrics/BlockLength:
 Layout/LineLength:
   Exclude:
     - 'config/initializers/devise.rb'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'db/schema.rb'

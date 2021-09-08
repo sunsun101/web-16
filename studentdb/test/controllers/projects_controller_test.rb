@@ -21,8 +21,14 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('Project.count') do
       post projects_url, params: { project: { name: @project.name, url: @project.url } }
     end
-
     assert_redirected_to project_url(Project.last)
+  end
+
+  test 'should fail to create project' do
+    assert_difference('Project.count', 0) do
+      post projects_url, params: { project: { name: '', url: '' } }
+    end
+    assert_response :unprocessable_entity
   end
 
   test 'should show project' do
@@ -38,6 +44,11 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   test 'should update project' do
     patch project_url(@project), params: { project: { name: @project.name, url: @project.url } }
     assert_redirected_to project_url(@project)
+  end
+
+  test 'should fail to update project' do
+    patch project_url(@project), params: { project: { name: '', url: '' } }
+    assert_response :unprocessable_entity
   end
 
   test 'should destroy project' do

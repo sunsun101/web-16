@@ -36,3 +36,13 @@ end
 Then('I should be signed in') do
   expect(page).to have_content "Welcome #{@user.email}"
 end
+
+Given('there are no users registered') do
+  User.all.each(&:delete)
+end
+
+Then('I should be an admin') do
+  expect(page).to have_link 'Admin dashboard'
+  click_link 'Admin dashboard'
+  expect(page).to have_content 'Admin dashboard'
+end

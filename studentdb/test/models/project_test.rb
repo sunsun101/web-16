@@ -3,7 +3,8 @@
 require 'test_helper'
 
 class ProjectTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'Project is valid' do
+    assert projects(:one).valid?
+    assert projects(:two).valid?
+  end
 end

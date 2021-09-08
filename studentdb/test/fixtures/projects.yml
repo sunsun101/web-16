@@ -1,9 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  url: MyString
+  name: 'Soi Cats and Dogs'
+  url: 'http://scad.org'
 
 two:
-  name: MyString
-  url: MyString
+  name: 'CSIM Info System'
+  url: 'http://info.cs.ait.ac.th'
