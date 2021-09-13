@@ -80,8 +80,12 @@ sudo su $DEPLOY_USER -c "npm config set proxy 'http://192.41.170.23:3128'" > /de
 # Set up database user and database
 
 echo "Checking database configuration..."
-psql postgres -c "" > /dev/null 2>&1 || sudo su postgres -c "createuser -s $USER"
+psql postgres -c "" > /dev/null 2>&1 || {
+  # TODO: Check if $USER is a postgres user. If so, make him/her superuser. If not, create.
+  sudo su postgres -c "createuser -s $USER"
+}
 psql $PROD_DB -c "" > /dev/null 2>&1 || {
+  # TODO: Check if DB exists. If so, add current user to have access else create the DB
   createdb $PROD_DB
 }
 dbconfig="`sudo cat /home/$DEPLOY_USER/$APP/shared/config/database.yml`"
