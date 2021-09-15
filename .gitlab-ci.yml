@@ -14,7 +14,7 @@ Setup environment:
     only:
         changes:
             - env/Dockerfile.test
-            # - .gitlab-ci.yml
+            - .gitlab-ci.yml
     interruptible: true
     image: docker:stable
     services:
@@ -23,8 +23,8 @@ Setup environment:
         - docker info
         - docker -D login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $CI_REGISTRY_IMAGE:latest
-        - docker -D build --cache-from $CI_REGISTRY_IMAGE:latest -f env/Dockerfile.test -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest env/
-        # - docker -D build -f env/Dockerfile.test -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest env/
+        # - docker -D build --cache-from $CI_REGISTRY_IMAGE:latest -f env/Dockerfile.test -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest env/
+        - docker -D build -f env/Dockerfile.test -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest env/
         - docker -D push $CI_REGISTRY_IMAGE
 
 Test application:
