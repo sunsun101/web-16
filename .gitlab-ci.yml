@@ -17,7 +17,7 @@ Setup environment:
             - env/Dockerfile.test
             - .gitlab-ci.yml
     interruptible: true
-    image: docker:stable
+    image: docker:19.03.0
     services:
         - docker:dind
     script:
