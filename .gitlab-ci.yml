@@ -5,7 +5,6 @@ stages:
 
 variables:
     DOCKER_DRIVER: overlay2  # Improves performance.
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/rl-gpu-build
     DOCKER_TLS_CERTDIR: "/certs"
     GIT_STRATEGY: clone
 
