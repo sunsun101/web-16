@@ -1,0 +1,45 @@
+
+stages:
+    - setup
+    - test
+
+variables:
+    DOCKER_DRIVER: overlay2  # Improves performance.
+    DOCKER_TLS_CERTDIR: "/certs"
+    GIT_STRATEGY: clone
+
+Setup environment:
+    stage: setup
+    only:
+        changes:
+            - env/Dockerfile.test
+            - .gitlab-ci.yml
+    interruptible: true
+    image: docker:19.03.0
+    services:
+        - docker:dind
+    script:
+        - docker info
+        - docker -D login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - docker pull $CI_REGISTRY_IMAGE:latest
+        - docker -D build --cache-from $CI_REGISTRY_IMAGE:latest -f env/Dockerfile.test -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest env/
+        # - docker -D build -f env/Dockerfile.test -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest env/
+        - docker -D push $CI_REGISTRY_IMAGE
+
+Test application:
+    stage: test
+    image: $CI_REGISTRY_IMAGE
+    interruptible: true
+    script:
+        - cd studentdb
+        - bundle install
+        - yarn install --check-files
+        - su postgres -c "initdb -D /var/lib/postgresql/data"
+        - mkdir -p /run/postgresql
+        - chown -R postgres /run/postgresql
+        - su postgres -c "pg_ctl start -D /var/lib/postgresql/data"
+        - su postgres -c "createuser -s root"
+        - rake db:create
+        - rake test
+        - rake cucumber
+
