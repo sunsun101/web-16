@@ -38,7 +38,7 @@ Test application:
         - su postgres -c "initdb -D /var/lib/postgresql/data"
         - mkdir -p /run/postgresql
         - chown -R postgres /run/postgresql
-        - postgres -c "pg_ctl start -D /var/lib/postgresql/data"
+        - su postgres -c "pg_ctl start -D /var/lib/postgresql/data"
         - su postgres -c "createuser -s root"
         - rake db:create
         - rake test
