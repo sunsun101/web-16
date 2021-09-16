@@ -1,4 +1,3 @@
-# Let's pretend it's working now
 
 stages:
     - setup
@@ -17,7 +16,7 @@ Setup environment:
             - env/Dockerfile.test
             - .gitlab-ci.yml
     interruptible: true
-    image: docker:stable
+    image: docker:19.03.0
     services:
         - docker:dind
     script:
@@ -39,7 +38,7 @@ Test application:
         - su postgres -c "initdb -D /var/lib/postgresql/data"
         - mkdir -p /run/postgresql
         - chown -R postgres /run/postgresql
-        - postgres -c "pg_ctl start -D /var/lib/postgresql/data"
+        - su postgres -c "pg_ctl start -D /var/lib/postgresql/data"
         - su postgres -c "createuser -s root"
         - rake db:create
         - rake test

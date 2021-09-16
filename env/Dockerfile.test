@@ -1,4 +1,15 @@
-FROM ruby:3.0.1:alpine
+FROM ruby:3.0.2-alpine
+
+# Proxy settings for apk
+
+ENV http_proxy=http://172.17.0.1:3128
+ENV https_proxy=http://172.17.0.1:3128
+
+# Install needed system packages
 
 RUN apk update && apk add build-base postgresql-dev yarn postgresql
+
+# Set up user's proxy for yarn
+
+RUN yarn config set 'https-proxy' 'http://172.17.0.1:3128'
 
