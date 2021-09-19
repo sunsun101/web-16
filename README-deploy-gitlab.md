@@ -56,6 +56,6 @@ Finally, add the deploy stage to your `.gitlab-ci.yml` file:
             - mkdir -p /root/.ssh
             - cp $DEPLOY_SSH_PRIV_KEY /root/.ssh/gitlab_ed25519
             - chmod 600 /root/.ssh/gitlab_ed25519
-            - `eval ssh-agent`
+            - '`eval ssh-agent`'
             - ssh-add /root/.ssh/gitlab_ed25519
             - bundle exec cap production deploy
