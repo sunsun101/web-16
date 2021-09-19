@@ -2,6 +2,7 @@
 
 require 'test_helper'
 
+# Test class for ProjectsController
 class ProjectsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @project = projects(:one)
@@ -19,7 +20,7 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create project' do
     assert_difference('Project.count') do
-      post projects_url, params: { project: { name: @project.name, url: @project.url } }
+      post projects_url, params: { project: { name: 'New project', url: @project.url } }
     end
     assert_redirected_to project_url(Project.last)
   end

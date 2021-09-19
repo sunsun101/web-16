@@ -2,6 +2,8 @@
 
 # Top-level site controller
 class SiteController < ApplicationController
+  before_action :authenticate_user!, except: [:index]
+
   def index; end
 
   def admin_dashboard

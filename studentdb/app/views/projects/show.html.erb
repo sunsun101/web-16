@@ -10,5 +10,42 @@
   <%= @project.url %>
 </p>
 
+<h2>Students</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Student ID</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @project.students.each do |student| %>
+      <tr>
+        <td><%= student.studentid %></td>
+        <td><%= student.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+  
+<br/>
+
+<h2>Add a student:</h2>
+<%= form_for([@project, @project.students.build]) do |f| %>
+  <div class="field">
+    <%= f.label :studentid %>
+    <br/>
+    <%= f.text_field :studentid %>
+  </div>
+  <div class="field">
+    <%= f.label :name %>
+    <br/>
+    <%= f.text_field :name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
 <%= link_to 'Edit', edit_project_path(@project) %> |
 <%= link_to 'Back', projects_path %>

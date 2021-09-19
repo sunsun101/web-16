@@ -1,40 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
     <title>Student Database</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <!-- Google Fonts Roboto -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+    />
   </head>
-
   <body>
-    <% if flash[:error] %>
-      <div id="error">
-        <%= flash[:error] %>
+    <header>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbar"
+            aria-controls="navbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item active">
+                <%= image_tag 'studentdb.png', height: 40 %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'Student Database', root_path, class: 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'Projects', projects_path, class: 'nav-link' %>
+              </li>
+              <% if current_user&.is_admin %>
+                <li class="nav-item">
+                  <%= link_to "Admin dashboard", admin_dashboard_path, class: 'nav-link' %>
+                </li>
+              <% end %>
+            </ul>
+            <div id="user_status">
+              <% if user_signed_in? %>
+                Welcome <%= current_user.email %>! Not you?
+                <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+              <% else %>
+                <%= link_to "Sign up", new_user_registration_path %> or
+                <%= link_to "Sign in", new_user_session_path %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Navbar -->
+
+      <!-- Jumbotron -->
+      <div class="p-5 text-center bg-light" style="margin-top: 58px;">
+        <h1 class="mb-3">Heading</h1>
+        <h4 class="mb-3">Subheading</h4>
+        <a class="btn btn-primary" href="" role="button">Call to action</a>
+
+        <div class="text-center">
+          <% if flash[:error] %>
+            <div id="error">
+              <%= flash[:error] %>
+            </div>
+          <% end %>
+
+          <p class="notice"><%= notice %></p>
+          <p class="alert"><%= alert %></p>
+
+          <div id="container">
+            <%= yield %>
+          </div>
+        </div>
       </div>
-    <% end %>
+    </header>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <!-- Custom scripts -->
+    <script type="text/javascript"></script>
 
-    <div id="container">
-      <div id="user_status">
-        <% if user_signed_in? %>
-          Welcome <%= current_user.email %>! Not you?
-          <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
-        <% else %>
-          <%= link_to "Sign up", new_user_registration_path %> or
-          <%= link_to "Sign in", new_user_session_path %>.
-        <% end %>
-        <% if current_user&.is_admin %>
-          <%= link_to "Admin dashboard", admin_dashboard_path %>
-        <% end %>
-      </div>
-
-      <%= yield %>
-    </div>
   </body>
-
 </html>

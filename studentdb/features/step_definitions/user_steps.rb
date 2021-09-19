@@ -22,15 +22,24 @@ When('I confirm') do
   visit user_confirmation_path(confirmation_token: token)
 end
 
-Then('I should be confirmed') do
-  expect(page).to have_content 'Your email address has been successfully confirmed'
+def sign_in(user)
+  click_link 'Sign in'
+  fill_in 'Email', with: user.email
+  fill_in 'Password', with: user.password
+  click_button 'Log in'
+end
+
+Given('I am signed in') do
+  visit root_url
+  sign_in(@user)
 end
 
 When('I sign in') do
-  click_link 'Sign in'
-  fill_in 'Email', with: @user.email
-  fill_in 'Password', with: @user.password
-  click_button 'Log in'
+  sign_in(@user)
+end
+
+Then('I should be confirmed') do
+  expect(page).to have_content 'Your email address has been successfully confirmed'
 end
 
 Then('I should be signed in') do

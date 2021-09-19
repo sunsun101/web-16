@@ -10,40 +10,51 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_908_032_318) do
+ActiveRecord::Schema.define(version: 2021_09_17_024707) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'projects', force: :cascade do |t|
-    t.string 'name', null: false
-    t.string 'url', null: false
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
+  create_table "project_students", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "student_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_project_students_on_project_id"
+    t.index ["student_id"], name: "index_project_students_on_student_id"
   end
 
-  create_table 'students', force: :cascade do |t|
-    t.string 'name'
-    t.string 'studentid'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.float 'balance'
-    t.integer 'lock_version', default: 0
+  create_table "projects", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'email', default: '', null: false
-    t.string 'encrypted_password', default: '', null: false
-    t.string 'reset_password_token'
-    t.datetime 'reset_password_sent_at'
-    t.datetime 'remember_created_at'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.string 'confirmation_token'
-    t.string 'confirmed_at'
-    t.datetime 'confirmation_sent_at'
-    t.string 'unconfirmed_email'
-    t.boolean 'is_admin', default: false
-    t.index ['email'], name: 'index_users_on_email', unique: true
-    t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
+  create_table "students", force: :cascade do |t|
+    t.string "name"
+    t.string "studentid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "confirmation_token"
+    t.string "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.boolean "is_admin", default: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  add_foreign_key "project_students", "projects"
+  add_foreign_key "project_students", "students"
 end
