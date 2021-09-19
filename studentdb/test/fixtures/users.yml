@@ -2,6 +2,8 @@
 
 one:
   email: 'user1@exaple.com'
+  confirmed_at: "2020-09-09 07:01:51.461869"
 
 two:
   email: 'user2@example.com'
+  confirmed_at: "2020-09-09 07:01:51.461869"

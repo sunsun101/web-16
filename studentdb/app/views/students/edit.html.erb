@@ -1,0 +1,6 @@
+<h1>Editing Student</h1>
+
+<%= render 'form', project: @project, student: @student %>
+
+<%= link_to 'Show', [@project, @student] %> |
+<%= link_to 'Back', project_students_path(@project) %>

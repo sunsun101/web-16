@@ -16,8 +16,8 @@ gem 'pundit'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 4.0'
 gem 'tzinfo-data'
+gem 'webpacker', '~> 5.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -33,10 +33,10 @@ group :development do
   gem 'capistrano-yarn'
   gem 'ed25519'
   gem 'listen', '~> 3.2'
-  gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+  gem 'solargraph'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
@@ -47,10 +47,9 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'launchy'
+  gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'webdrivers'
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
