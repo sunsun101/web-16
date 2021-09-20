@@ -62,6 +62,12 @@ Edit `cntlm.conf` to have contents
     Proxy  192.41.170.23:3128
     Listen 172.17.0.1:3128
 
+Make sure this file is owned by the `cntlm` user and has 600 permissions (it
+stores authentication credentials in some use cases so it should be private):
+
+    sudo chown cntlm.uuidd /etc/cntlm.conf
+    sudo chmod 600 /etc/cntlm.conf
+
 ## Set proxy for gitlab runner
 
     vi /etc/systemd/system/gitlab-runner.service.d/http-proxy.conf
@@ -134,35 +140,26 @@ some interval such as 10 seconds.
 
     vi /etc/systemd/system/cntlm.service
 
-Include contents below. Some may be redundant (they are from systemd's
-SysV-init-to-systemd conversion program).
+Include contents below. Some may be redundant but it works for me.
 
     [Unit]
     SourcePath=/etc/init.d/cntlm
-    Description=Authenticating HTTP accelerator for NTLM secured proxies
-    Before=multi-user.target
-    Before=graphical.target
-    After=remote-fs.target
-    After=time-sync.target
-    After=network-online.target
-    Wants=network-online.target
-    Wants=docker.service
-    StartLimitInterval=600
-    StartLimitBurst=60
+    Description=NTLM proxy server
+    After=remote-fs.target time-sync.target network-online.target
+    Wants=network-online.target docker.service
+    ConditionFileIsExecutable=/usr/sbin/cntlm
 
     [Service]
-    Type=forking
+    StartLimitInterval=600
+    StartLimitBurst=60
+    EnvironmentFile=-/etc/defaults/cntlm
     Restart=always
     RestartSec=10
     TimeoutSec=5min
-    IgnoreSIGPIPE=no
-    KillMode=process
-    GuessMainPID=no
-    RemainAfterExit=yes
-    SuccessExitStatus=5 6
-    ExecStart=/etc/init.d/cntlm start
-    ExecStop=/etc/init.d/cntlm stop
-    ExecReload=/etc/init.d/cntlm reload
+    RuntimeDirectory=cntlm
+    User=cntlm
+    Group=uuidd
+    ExecStart=/usr/sbin/cntlm "-U" "cntlm" "-P" "/var/run/cntlm/cntlm.pid"
 
     [Install]
     WantedBy=multi-user.target
