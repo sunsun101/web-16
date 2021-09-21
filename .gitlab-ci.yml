@@ -74,6 +74,8 @@ Deploy to production:
     script:
         - cd studentdb
         - mkdir -p /root/.ssh
+        - echo $DEPLOY_SSH_PRIV_KEY
+        - cat $DEPLOY_SSH_PRIV_KEY
         - cp $DEPLOY_SSH_PRIV_KEY /root/.ssh/gitlab_ed25519
         - chmod 600 /root/.ssh/gitlab_ed25519
         - eval $(ssh-agent)
