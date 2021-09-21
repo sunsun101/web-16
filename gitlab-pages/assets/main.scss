@@ -6,7 +6,7 @@
 
 
 .site-title::before {
-  content: url("/studentdb-small.png");
+  content: url("{{url}}/{{baseurl}}/studentdb-small.png");
   display: inline-block;
   position: relative;
   width: 37px;
