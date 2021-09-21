@@ -42,8 +42,8 @@ Test application:
         - chown -R postgres /run/postgresql
         - su postgres -c "pg_ctl start -D /var/lib/postgresql/data"
         - su postgres -c "createuser -s root"
-        - rake db:create
-        - rake test
+        - bundle exec rake db:create
+        - bundle exec rake test
         - bundle exec cucumber --format html --out cucumber-report.html
     artifacts:
         paths:

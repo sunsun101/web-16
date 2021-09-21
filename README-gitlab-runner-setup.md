@@ -22,7 +22,7 @@ runner, perhaps to improve runtime performance.
 
 Fill in `config.toml` with contents:
 
-    concurrent = 1
+    concurrent = 2
     check_interval = 0
 
     [[runners]]

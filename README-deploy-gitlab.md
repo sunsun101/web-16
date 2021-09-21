@@ -39,6 +39,10 @@ In GitLab, go to Settings -> CI/CD -> Variables, click on "Add variable", choose
 `DEPLOY_SSH_PRIV_KEY`, and use the contents of the private key file (`-----BEGIN OPENSSH PRI...`)
 for the Value.
 
+**Important: make sure you add a trailing newline at the end of the file (there should be a blank line at the end
+of the file) when you enter it as the Value of the file variable. If you miss this, you will get a mysterious error
+from `ssh-add` that the format of the key file is invalid.**
+
 Finally, add the deploy stage to your `.gitlab-ci.yml` file:
 
     stages:
@@ -59,3 +63,20 @@ Finally, add the deploy stage to your `.gitlab-ci.yml` file:
             - eval $(ssh-agent)
             - ssh-add /root/.ssh/gitlab_ed25519
             - bundle exec cap production deploy
+
+This, of course, requires that the Capistrano gem is installed.
+But this is an isolated execution of the Alpine Ruby image, so
+it won't remember your bundle from the build step unless you
+created it in the working directory. Therefore, before the
+`bundle install` in the build/test step, make sure you tell
+Bundler to use a local directory for the bundle, for example
+
+    ...
+    Test application:
+        ...
+        script:
+            - cd studentdb
+            - bundle config set --local path '.bundle'
+            ...
+
+That should do it! Let me know if any trouble.
