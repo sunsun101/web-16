@@ -74,6 +74,8 @@ Deploy to production:
     image: $CI_REGISTRY_IMAGE
     script:
         - cd studentdb
+        - bundle config set --local path '.bundle'
+        - ls -al | grep bundle
         - mkdir -p /root/.ssh
         - cp $DEPLOY_SSH_PRIV_KEY /root/.ssh/gitlab_ed25519
         - chmod 600 /root/.ssh/gitlab_ed25519
