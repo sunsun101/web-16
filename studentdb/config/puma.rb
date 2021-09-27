@@ -14,6 +14,7 @@ if rails_env == 'production'
   preload_app!
   state_path '/home/deploy/studentdb/shared/tmp/sockets/puma.state'
   bind 'unix:///home/deploy/studentdb/shared/tmp/sockets/puma.sock'
+  directory '/home/deploy/studentdb/current'
 end
 
 # 1-5 threads per worker
