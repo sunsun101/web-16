@@ -17,29 +17,42 @@ When('I visit the projects page') do
 end
 
 Then('I should see a link for the project') do
-  expect(page).to have_link('Show', href: project_path(@project))
+  expect(page).to have_link(href: project_path(@project))
 end
 
 When('I click the link for the project') do
-  find_link('Show', href: project_path(@project)).click
+  find_all("a[href='#{project_path(@project)}']").first.click
 end
 
 Then('I should see the details of my project') do
-  expect(page).to have_content "Name: #{@project.name}"
-  expect(page).to have_content "Url: #{@project.url}"
+  expect(page).to have_content @project.name
+  expect(page).to have_content @project.url
 end
 
 Then('I should see a form to add a student') do
-  expect(page).to have_selector('form#new_student')
+  within '#new-student-form' do
+    expect(page).to have_field('Studentid')
+    expect(page).to have_field('Name')
+  end
 end
 
 When('I submit the form') do
-  fill_in 'Studentid', with: @student.studentid
-  fill_in 'Name', with: @student.name
-  click_button 'Create Student'
+  within '#new-student-form' do
+    fill_in 'Studentid', with: @student.studentid
+    fill_in 'Name', with: @student.name
+  end
+  click_button 'Update project students'
 end
 
 Then('I should see the student added to the project') do
   expect(page).to have_content @student.studentid
   expect(page).to have_content @student.name
+end
+
+Then('I should see an edit link') do
+  expect(page).to have_link href: edit_project_path(@project)
+end
+
+When('I click the edit link') do
+  find_link(href: edit_project_path(@project)).click
 end

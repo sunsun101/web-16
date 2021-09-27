@@ -1,14 +1,38 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Studentid:</strong>
-  <%= @student.studentid %>
-</p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @student.name %>
-</p>
-
-<%= link_to 'Edit', edit_project_student_path(@project, @student) %> |
-<%= link_to 'Back', project_students_path(@project) %>
+<div class="col-md-4 offset-md-4">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">
+        <%= @student.name %>
+        <%= link_to edit_student_path(@student) do %>
+          <span title="Edit"><i class="fa fa-edit"></i></span>
+        <% end %>
+      </h4>
+      <%= link_to students_path do %>
+        <h4 class="close"><span title="Close"><i class="fa fa-times"></i></span></h4>
+      <% end %>
+      <p class="mb-4"><strong>Student ID:</strong> <%= @student.studentid %></p>
+      <h5>Projects</h5>
+      <% if @student.projects.size > 0 %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @student.projects.each do |project| %>
+              <tr>
+                <td><%= link_to project.name, project_path(project) %></td>
+                <td><%= project.url %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="mb-4"><i>None added yet</i></p>
+      <% end %>
+    </div>
+  </div>
+</div>

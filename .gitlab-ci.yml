@@ -36,6 +36,7 @@ Test application:
         - cd studentdb
         - bundle config set --local path '.bundle'
         - bundle install
+        - bundle exec rubocop
         - yarn install --check-files
         - su postgres -c "initdb -D /var/lib/postgresql/data"
         - mkdir -p /run/postgresql
@@ -81,4 +82,5 @@ Deploy to production:
         - chmod 600 /root/.ssh/gitlab_ed25519
         - eval $(ssh-agent)
         - ssh-add /root/.ssh/gitlab_ed25519
+        - export BAZOOKA_USER=mdailey
         - bundle exec cap production deploy

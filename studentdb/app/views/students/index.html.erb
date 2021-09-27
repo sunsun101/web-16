@@ -1,29 +1,49 @@
-<p id="notice"><%= notice %></p>
+<div class="col-md-4 offset-md-4">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Students</h4>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Studentid</th>
+            <th>Name</th>
+            <% if user_signed_in? %>
+              <th colspan="3">Actions</th>
+            <% else %>
+              <th colspan="1"></th>
+            <% end %>
+          </tr>
+        </thead>
 
-<h1>Students</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Studentid</th>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @project.students.each do |student| %>
-      <tr>
-        <td><%= student.studentid %></td>
-        <td><%= student.name %></td>
-        <td><%= link_to 'Show', student %></td>
-        <td><%= link_to 'Edit', edit_student_path(student) %></td>
-        <td><%= link_to 'Destroy', student, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Student', new_project_student_path(@project) %>
+        <tbody>
+          <% @students.each do |student| %>
+            <tr>
+              <td><%= student.studentid %></td>
+              <td><%= student.name %></td>
+              <td>
+                <%= link_to student do %>
+                  <i class="fa fa-eye"></i>
+                <% end %>
+              </td>
+              <% if user_signed_in? %>
+                <td>
+                  <%= link_to edit_student_path(student) do %>
+                    <i class="fa fa-edit"></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link_to student, method: :delete, data: { confirm: 'Are you sure?' } do %>
+                    <i class="fa fa-trash"></i>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <% if user_signed_in? %>
+        <%= link_to 'New Student', new_student_path, class: "btn btn-primary", role: "button" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@
 
 require 'test_helper'
 
+# Project model unit tests
 class ProjectTest < ActiveSupport::TestCase
   test 'Project is valid' do
     assert projects(:one).valid?
@@ -19,5 +20,16 @@ class ProjectTest < ActiveSupport::TestCase
     project = Project.new name: old_project.name
     assert !project.valid?
     assert_equal ['has already been taken'], project.errors[:name]
+  end
+
+  test 'should destroy associated student' do
+    project = project_students(:one).project
+    student = project.students.first
+    id = student.id
+    project.update(students_attributes: [{ id: student.id.to_s, _destroy_r: '1' }])
+    assert Student.find_by_id(id).nil?
+    count = project.students.size
+    project.update(students_attributes: [{ studentid: '', name: '' }])
+    assert_equal count, project.students.size
   end
 end

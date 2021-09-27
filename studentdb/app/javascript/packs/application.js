@@ -8,14 +8,21 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 
-// Font awesome, Material Design Bootstrap
+// Javascript: Font awesome, Material Design Bootstrap
 
-import "@fortawesome/fontawesome-free/js/all"
-import "mdb-ui-kit/js/mdb.min.js"
+require("@fortawesome/fontawesome-free/js/all.min.js")
+require("mdb-ui-kit/js/mdb.min.js")
+require("packs/mdb.js")
+require("packs/projects.js")
 
-// Uncomment to copy all static images under ../images to the output folder and reference
-// them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
-// or the `imagePath` JavaScript helper below.
-//
-// const images = require.context('../images', true)
-// const imagePath = (name) => images(name, true)
+// CSS: FA, MDB, our own custom CSS
+
+import "@fortawesome/fontawesome-free/css/all.min.css"
+import "mdb-ui-kit/css/mdb.min.css"
+import "styles/application.scss"
+import "slim-select/dist/slimselect.min.css"
+
+// Images
+
+const images = require.context('../images', true)
+const imagePath = (name) => images(name, true)

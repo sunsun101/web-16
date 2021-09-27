@@ -9,7 +9,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
     <!-- Google Fonts Roboto -->
@@ -37,13 +37,16 @@
           <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item active">
-                <%= image_tag 'studentdb.png', height: 40 %>
+                <%= image_pack_tag 'studentdb.png', height: 40 %>
               </li>
               <li class="nav-item">
                 <%= link_to 'Student Database', root_path, class: 'nav-link' %>
               </li>
               <li class="nav-item">
                 <%= link_to 'Projects', projects_path, class: 'nav-link' %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'Students', students_path, class: 'nav-link' %>
               </li>
               <% if current_user&.is_admin %>
                 <li class="nav-item">
@@ -63,31 +66,31 @@
           </div>
         </div>
       </nav>
-      <!-- Navbar -->
-
-      <!-- Jumbotron -->
-      <div class="p-5 text-center bg-light" style="margin-top: 58px;">
-        <h1 class="mb-3">Heading</h1>
-        <h4 class="mb-3">Subheading</h4>
-        <a class="btn btn-primary" href="" role="button">Call to action</a>
-
-        <div class="text-center">
-          <% if flash[:error] %>
-            <div id="error">
-              <%= flash[:error] %>
-            </div>
-          <% end %>
-
-          <p class="notice"><%= notice %></p>
-          <p class="alert"><%= alert %></p>
-
-          <div id="container">
-            <%= yield %>
-          </div>
-        </div>
-      </div>
     </header>
 
+    <!-- Jumbotron -->
+    <div class="p-5 text-center bg-light" style="margin-top: 58px;">
+      <% if flash[:error] %>
+        <div class="error col-4 offset-md-4">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <%= flash[:error] %>
+        </div>
+      <% end %>
+      <% if flash[:notice] %>
+        <div class="notice col-4 offset-md-4">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
+      <% if flash[:alert] %>
+        <div class="alert col-4 offset-md-4">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <%= alert %>
+        </div>
+      <% end %>
+      <%= yield %>
+    </div>
+  
     <!-- Custom scripts -->
     <script type="text/javascript"></script>
 

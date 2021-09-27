@@ -16,7 +16,9 @@ Scenario: Add student to a project
     Then I should see a link for the project
     When I click the link for the project
     Then I should see the details of my project
-    And I should see a form to add a student
+    And I should see an edit link
+    When I click the edit link
+    Then I should see a form to add a student
     When I submit the form
     Then I should see the details of my project
     And I should see the student added to the project

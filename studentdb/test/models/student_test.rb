@@ -16,4 +16,13 @@ class StudentTest < ActiveSupport::TestCase
     assert !student.valid?, 'Non-unique studentid should be invalid'
     assert_equal ['has already been taken'], student.errors[:studentid]
   end
+
+  test 'should reject update with blank' do
+    student = students(:one)
+    count = student.projects.size
+    student.update(projects_attributes: [{ name: 'New project', url: 'https://test.com' }])
+    assert_equal count + 1, student.projects.size
+    student.update(projects_attributes: [{ name: '', url: '' }])
+    assert_equal count + 1, student.projects.size
+  end
 end

@@ -2,7 +2,7 @@
 
 set :default_env, { 'http_proxy' => '192.41.170.23:3128',
                     'https_proxy' => '192.41.170.23:3128',
-                    'BAZOOKA_USER' => ENV['USER'] }
+                    'BAZOOKA_USER' => ENV['BAZOOKA_USER'] || ENV['USER'] }
 
 server 'web16', user: 'deploy', roles: %w[app db web]
 
