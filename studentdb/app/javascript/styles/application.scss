@@ -1,0 +1,80 @@
+  
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table; }
+
+#error_explanation {
+  width: 450px;
+  border: 2px solid #722;
+  padding: 7px 7px 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0; }
+
+#error_explanation h2 {
+  text-align: center;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px -7px 0;
+  background-color: #900;
+  color: #fff; }
+
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square; }
+
+/* Alert message box */
+
+.alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* Notice message box */
+
+.notice {
+  padding: 20px;
+  background-color: lightgreen;
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* Close button for alert */
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+div.bg-image {
+  background-image: url('../images/ait.jpg');
+  height: 400px;
+}
+
+div.card-body {
+  position: relative
+}
+
+.card-body h4.close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+div.error, div.alert, div.notice {
+  border-radius: 18px;
+}

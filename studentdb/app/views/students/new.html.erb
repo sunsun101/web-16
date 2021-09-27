@@ -1,5 +1,12 @@
-<h1>New Student</h1>
 
-<%= render 'form', project: @project, student: @student %>
-
-<%= link_to 'Back', project_students_path(@project) %>
+<div class="col-md-4 offset-md-4">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">New Student</h4>
+      <%= link_to students_path do %>
+        <h4 class="close"><span title="Close"><i class="fa fa-times"></i></span></h4>
+      <% end %>
+      <%= render 'form', student: @student %>
+    </div>
+  </div>
+</div>

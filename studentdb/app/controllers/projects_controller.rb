@@ -2,6 +2,7 @@
 
 # Controller for the projects resource
 class ProjectsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_project, only: %i[show edit update destroy]
 
   # GET /projects or /projects.json
@@ -15,15 +16,17 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   def new
     @project = Project.new
+    @project.students.build
   end
 
   # GET /projects/1/edit
-  def edit; end
+  def edit
+    @project.students.build
+  end
 
   # POST /projects or /projects.json
   def create
     @project = Project.new(project_params)
-
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
@@ -64,8 +67,17 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  # Get list of IDs from students attributes
+  def existing_student_ids(filtered_parms)
+    filtered_parms[:students_attributes]&.values&.collect { |s| s[:id] }&.compact
+  end
+
   # Only allow a list of trusted parameters through.
   def project_params
-    params.require(:project).permit(:name, :url)
+    filtered_params = params.require(:project).permit(
+      :name, :url, student_ids: [], students_attributes: %i[id studentid name _destroy _destroy_r]
+    )
+    filtered_params[:student_ids] |= existing_student_ids(filtered_params)
+    filtered_params
   end
 end

@@ -1,51 +1,38 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @project.name %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @project.url %>
-</p>
-
-<h2>Students</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Student ID</th>
-      <th>Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @project.students.each do |student| %>
-      <tr>
-        <td><%= student.studentid %></td>
-        <td><%= student.name %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-  
-<br/>
-
-<h2>Add a student:</h2>
-<%= form_for([@project, @project.students.build]) do |f| %>
-  <div class="field">
-    <%= f.label :studentid %>
-    <br/>
-    <%= f.text_field :studentid %>
+<div class="col-md-4 offset-md-4">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">
+        <%= @project.name %>
+        <%= link_to edit_project_path(@project) do %>
+          <span title="Edit"><i class="fa fa-edit"></i></span>
+        <% end %>
+      </h4>
+      <%= link_to projects_path do %>
+        <h4 class="close"><span title="Close"><i class="fa fa-times"></i></span></h4>
+      <% end %>
+      <p class="mb-4"><%= @project.url %></p>
+      <h5>Students</h5>
+      <% if @project.students.size > 0 %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Student ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @project.students.each do |student| %>
+              <tr>
+                <td><%= link_to student.name, student_path(student) %></td>
+                <td><%= student.studentid %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="mb-4"><i>None added yet</i></p>
+      <% end %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :name %>
-    <br/>
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+</div>

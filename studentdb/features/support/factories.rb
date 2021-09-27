@@ -4,11 +4,13 @@ FactoryBot.define do
   factory :user do
     email { 'testuser1@example.com' }
     password { 'testpassword' }
+    confirmed_at { 1.day.ago }
   end
 
   factory :teacher, class: User do
     email { 'joe_teacher@ait.asia' }
     password { 'testpassword' }
+    confirmed_at { 1.day.ago }
   end
 
   factory :project do

@@ -1,8 +1,8 @@
-<%= form_with(model: project, local: true) do |form| %>
-  <% if project.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
 
+<%= form_with(model: project, local: true, class: 'row d-flex justify-content-center') do |form| %>
+  <% if project.errors.any? %>
+    <div id="error_explanation" class="mb-4 text-center">
+      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
       <ul>
         <% project.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -11,17 +11,61 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+  <div class="form-outline mb-4">
+    <%= form.text_field :name, class: 'form-control' %>
+    <%= form.label :name, class: 'form-label' %>
   </div>
 
-  <div class="field">
-    <%= form.label :url %>
-    <%= form.text_field :url %>
+  <div class="form-outline mb-4">
+    <%= form.text_field :url, class: 'form-control' %>
+    <%= form.label :url, class: 'form-label' %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= form.submit class: 'btn btn-primary mb-4' %>
+
+  <% if !project.new_record? %>
+    <h5>Students</h5>
+    <div id="existing-students-container" class="mb-4">
+      <%= form.select :student_ids,
+          options_for_select((Student.all - project.students).collect { |student| [student.name, student.id] }),
+          {}, { multiple: true, id: "existing-students" } %>
+    </div>
+    <%= form.fields_for(:students) do |nested_form| %>
+      <% if nested_form.object.new_record? %>
+        <p class="mb-4">
+          <%= link_to 'Add new student', '#new-student-form',
+                      class: 'btn',
+                      'data-mdb-toggle' => 'collapse',
+                      role: 'button',
+                      'aria-expanded' => 'false',
+                      'aria-controls' => 'new-student-form' %>
+        </p>
+        <div class="collapse mt-3" id="new-student-form">
+          <h6>New student</h6>
+      <% else %>
+        <% student_index = nested_form.options[:child_index] %>
+        <div class="mt-3" id="student-<%= student_index %>-form">
+          <h6>Current student
+            <%= nested_form.check_box :_destroy, value: false, style: "display: none;" %>
+            <%= nested_form.check_box :_destroy_r, value: false, style: "display: none;" %>
+            <%= link_to '#', class: "destroy-student-link", data: { student_index: student_index } do %>
+              <span title="Remove student from project"><i class="fa fa-user-slash"></i></span>
+            <% end %>
+            <%= link_to '#', class: "recursive-destroy-student-link", data: { student_index: student_index } do %>
+              <span title="Destroy student"><i class="fa fa-trash"></i></span>
+            <% end %>
+          </h6>
+      <% end %>
+          <div class="form-outline mb-4">
+            <%= nested_form.text_field :studentid, class: 'form-control' %>
+            <%= nested_form.label :studentid, class: 'form-label' %>
+          </div>
+          <div class="form-outline mb-4">
+            <%= nested_form.text_field :name, class: 'form-control' %>
+            <%= nested_form.label :name, class: 'form-label' %>
+          </div>
+        </div>
+    <% end %>
+    <%= form.submit 'Update project students', class: 'btn btn-primary mb-4' %>
+  <% end %>
 <% end %>

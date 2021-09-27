@@ -39,9 +39,15 @@ In GitLab, go to Settings -> CI/CD -> Variables, click on "Add variable", choose
 `DEPLOY_SSH_PRIV_KEY`, and use the contents of the private key file (`-----BEGIN OPENSSH PRI...`)
 for the Value.
 
-**Important: make sure you add a trailing newline at the end of the file (there should be a blank line at the end
-of the file) when you enter it as the Value of the file variable. If you miss this, you will get a mysterious error
-from `ssh-add` that the format of the key file is invalid.**
+Also, adding the private key as a variable doesn't mean that Capistrano will be able
+to use that private key to access GitLab from the production server. For that, there
+is another setting, a "deploy key." To add a deploy key to your repository, go to
+Settings -> Repository, find the "Deploy Keys" tab, and add the public key corresponding
+to the private key you specified above with read-only access to the repository.
+
+**Important: make sure you add a trailing newline at the end of the file (there should be a blank
+line at the end of the file) when you enter it as the Value of the file variable. If you miss this,
+you will get a mysterious error from `ssh-add` that the format of the key file is invalid.**
 
 Finally, add the deploy stage to your `.gitlab-ci.yml` file:
 
@@ -57,17 +63,20 @@ Finally, add the deploy stage to your `.gitlab-ci.yml` file:
         image: $CI_REGISTRY_IMAGE
         script:
             - cd studentdb
+            - bundle config set --local path '.bundle'
             - mkdir -p /root/.ssh
             - cp $DEPLOY_SSH_PRIV_KEY /root/.ssh/gitlab_ed25519
             - chmod 600 /root/.ssh/gitlab_ed25519
             - eval $(ssh-agent)
             - ssh-add /root/.ssh/gitlab_ed25519
+            - export BAZOOKA_USER=mdailey
             - bundle exec cap production deploy
 
 This, of course, requires that the Capistrano gem is installed.
 But this is an isolated execution of the Alpine Ruby image, so
 it won't remember your bundle from the build step unless you
-created it in the working directory. Therefore, before the
+created it in the working directory and archived it as an
+artifact. Therefore, before the
 `bundle install` in the build/test step, make sure you tell
 Bundler to use a local directory for the bundle, for example
 
@@ -78,5 +87,7 @@ Bundler to use a local directory for the bundle, for example
             - cd studentdb
             - bundle config set --local path '.bundle'
             ...
+        artifacts:
+            - studentdb/.bundle
 
 That should do it! Let me know if any trouble.

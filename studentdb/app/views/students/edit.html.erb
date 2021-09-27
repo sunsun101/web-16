@@ -1,6 +1,17 @@
-<h1>Editing Student</h1>
 
-<%= render 'form', project: @project, student: @student %>
-
-<%= link_to 'Show', [@project, @student] %> |
-<%= link_to 'Back', project_students_path(@project) %>
+<div class="col-md-4 offset-md-4">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">
+        Edit Student
+        <%= link_to student_path(@student) do %>
+          <span title="Discard changes and show"><i class="fa fa-eye"></i></span>
+        <% end %>
+      </h4>
+      <%= link_to students_path do %>
+        <h4 class="close"><span title="Close"><i class="fa fa-times"></i></span></h4>
+      <% end %>
+      <%= render 'form', student: @student %>
+    </div>
+  </div>
+</div>

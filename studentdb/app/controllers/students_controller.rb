@@ -2,8 +2,7 @@
 
 # Student controller class
 class StudentsController < ApplicationController
-  before_action :set_student, only: %i[ show edit update destroy ]
-  before_action :set_project
+  before_action :set_student, only: %i[show edit update destroy]
 
   # GET /students or /students.json
   def index
@@ -16,21 +15,24 @@ class StudentsController < ApplicationController
   # GET /students/new
   def new
     @student = Student.new
+    @student.projects.build
   end
 
   # GET /students/1/edit
-  def edit; end
+  def edit
+    @student.projects.build
+  end
 
   # POST /students or /students.json
   def create
-    @student = @project.students.create(student_params)
+    @student = Student.create(student_params)
     respond_to do |format|
       if @student.id
-        format.html { redirect_to @project, notice: 'Student was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
+        format.html { redirect_to @student, notice: 'Student was successfully created.' }
+        format.json { render :show, status: :created, location: @student }
       else
         format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: @student.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -39,8 +41,8 @@ class StudentsController < ApplicationController
   def update
     respond_to do |format|
       if @student.update(student_params)
-        format.html { redirect_to [@project, @student], notice: 'Student was successfully updated.' }
-        format.json { render :show, status: :ok, location: [@project, @student] }
+        format.html { redirect_to @student, notice: 'Student was successfully updated.' }
+        format.json { render :show, status: :ok, location: @student }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @student.errors, status: :unprocessable_entity }
@@ -52,7 +54,7 @@ class StudentsController < ApplicationController
   def destroy
     @student.destroy
     respond_to do |format|
-      format.html { redirect_to project_students_url(@project), notice: 'Student was successfully destroyed.' }
+      format.html { redirect_to students_url, notice: 'Student was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,12 +66,17 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
   end
 
-  def set_project
-    @project = Project.find(params[:project_id])
+  # Get list of IDs from projects attributes
+  def existing_project_ids(filtered_parms)
+    filtered_parms[:projects_attributes]&.values&.collect { |p| p[:id] }&.compact
   end
 
   # Only allow a list of trusted parameters through.
   def student_params
-    params.require(:student).permit(:studentid, :name)
+    filtered_params = params.require(:student).permit(
+      :studentid, :name, project_ids: [], projects_attributes: %i[id name url _destroy]
+    )
+    filtered_params[:project_ids] |= existing_project_ids(filtered_params)
+    filtered_params
   end
 end

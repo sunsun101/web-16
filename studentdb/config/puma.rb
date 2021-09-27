@@ -12,10 +12,8 @@ if rails_env == 'production'
   ENV['http_proxy'] = 'http://192.41.170.23:3128'
   workers 2
   preload_app!
-  state_path 'tmp/sockets/puma.state'
-  # Location of the control socket. Must be created in advance.
-  app_dir = File.expand_path('..', __dir__)
-  bind "unix://#{app_dir}/tmp/sockets/puma.sock"
+  state_path '/home/deploy/studentdb/shared/tmp/sockets/puma.state'
+  bind 'unix:///home/deploy/studentdb/shared/tmp/sockets/puma.sock'
 end
 
 # 1-5 threads per worker
