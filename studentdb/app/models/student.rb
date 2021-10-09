@@ -13,4 +13,9 @@ class Student < ApplicationRecord
   def reject_projects(attributes)
     attributes['name'].blank? and attributes['url'].blank?
   end
+
+  def self.find_or_create_by_studentid(studentid)
+    student = find_by_studentid(studentid)
+    student || create(studentid: studentid, name: 'New student')
+  end
 end

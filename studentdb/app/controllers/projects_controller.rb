@@ -15,6 +15,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
+    authorize Project
     @project = Project.new
     @project.students.build
   end
@@ -54,7 +55,16 @@ class ProjectsController < ApplicationController
   # POST /projects/:id/students
 
   def add_student
-    authorize @project, params[:student]
+    authorize params[:student], :add_to_project?, policy_class: StudentPolicy
+    respond_to do |format|
+      if @project.add_student params[:student]
+        format.html { redirect_to @project, notice: 'Student was successfully added.' }
+        format.json { render :show, status: :ok, location: @project }
+      else
+        format.html { render :show, status: :unprocessable_entity }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /projects/1 or /projects/1.json
@@ -80,9 +90,7 @@ class ProjectsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def project_params
-    filtered_params = params.require(:project).permit(
-      :name, :url, student_ids: [], students_attributes: %i[id studentid name _destroy _destroy_r]
-    )
+    filtered_params = params.require(:project).permit(policy(@project || Project).permitted_attributes)
     filtered_params[:student_ids] |= existing_student_ids(filtered_params)
     filtered_params
   end

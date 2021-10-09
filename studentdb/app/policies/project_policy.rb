@@ -2,17 +2,15 @@
 
 # Access control policy for projects
 class ProjectPolicy < ApplicationPolicy
-  attr_reader :user
-
   def permitted_attributes
-    if user.is_admin
-        [:name, :url, student_ids: [], students_attributes: %i[id studentid name _destroy _destroy_r]]
-    else
-        
+    if @user.is_admin
+      [:name, :url, { student_ids: %i[] }, { students_attributes: %i[id studentid name _destroy _destroy_r] }]
+    elsif @user.is_student
+      [student: %i[studentid]]
     end
   end
 
-  def add_student?(student_params)
-    @user.is_admin || @user.is_student && @user.studentid == student_params[:studentid]
+  def new?
+    @user.is_admin
   end
 end

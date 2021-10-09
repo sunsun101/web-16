@@ -23,7 +23,6 @@ Scenario: Add student to a project
     Then I should see the details of my project
     And I should see the student added to the project
 
-@wip
 Scenario: Add self to project
 
     Given I am a student

@@ -74,5 +74,5 @@ When('I click the “add myself” link') do
 end
 
 Then('I should be listed as a student on the project') do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(page).to have_content @user.studentid
 end

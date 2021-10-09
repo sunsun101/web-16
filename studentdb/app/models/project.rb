@@ -18,4 +18,11 @@ class Project < ApplicationRecord
     end
     attributes['studentid'].blank? and attributes['name'].blank?
   end
+
+  def add_student(attributes)
+    student = Student.find_or_create_by_studentid attributes[:studentid]
+    errors[:students] << 'already has the requested student' and return false if students.include? student
+
+    students.append student
+  end
 end

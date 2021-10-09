@@ -19,6 +19,20 @@ var setStudentSelector = function () {
   }
 }
 
+function addAlert(message) {
+  document.querySelectorAll("div.alert", (divElement) => {
+    divElement.remove();
+  });
+  const newAlert = document.createElement("div");
+  newAlert.className = "alert col-4 offset-md-4";
+  newAlert.innerHTML = `<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>${message}`;
+  const cardElement = document.querySelector("div.card");
+  if (cardElement) {
+    const parentDiv = cardElement.parentNode.parentNode;
+    parentDiv.insertBefore(newAlert, cardElement.parentNode);
+  }
+}
+
 var setProjectCallbacks = function () {
   document.querySelectorAll('.destroy-student-link').forEach((el) => {
     const index = el.dataset.studentIndex;
@@ -57,8 +71,14 @@ var setProjectCallbacks = function () {
           'X-CSRF-Token': token
         },
         body: JSON.stringify({ student: { studentid: studentId }})
+      }).then((response) => {
+        if (response.ok) {
+          Turbolinks.visit(x.url, { notice: "You were successfully added to the project." });
+        } else {
+          addAlert("You could not be added to the project. Are you already on it?");
+        }
       });
-      return false;
+      return false;    
     };
   }
 }

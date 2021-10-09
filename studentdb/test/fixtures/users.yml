@@ -2,8 +2,13 @@
 
 one:
   email: 'user1@exaple.com'
+  is_admin: true
   confirmed_at: "2020-09-09 07:01:51.461869"
 
 two:
   email: 'user2@example.com'
+  confirmed_at: "2020-09-09 07:01:51.461869"
+
+student:
+  email: 'st123456@ait.asia'
   confirmed_at: "2020-09-09 07:01:51.461869"

@@ -37,7 +37,7 @@
         <%= link_to 'Add self to project', '#', class: "btn btn-primary",
                     role: "button", id: "add-self-to-project",
                     data: {
-                      'path': add_student_to_project_path(@project),
+                      'path': add_student_to_project_path(@project, format: :json),
                       'student-id': current_user.studentid
                     } %>
       <% end %>
