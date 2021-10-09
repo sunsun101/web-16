@@ -56,3 +56,23 @@ end
 When('I click the edit link') do
   find_link(href: edit_project_path(@project)).click
 end
+
+Given('I am a student') do
+  @user = FactoryBot.create :student_user
+end
+
+Given('I want to add myself to the project') do
+  @student_to_add = @user
+end
+
+Then('I should see a link to add myself to the project') do
+  expect(page).to have_link text: 'Add self to project'
+end
+
+When('I click the “add myself” link') do
+  find_link(text: 'Add self to project').click
+end
+
+Then('I should be listed as a student on the project') do
+  pending # Write code here that turns the phrase above into concrete actions
+end

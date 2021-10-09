@@ -13,6 +13,13 @@ FactoryBot.define do
     confirmed_at { 1.day.ago }
   end
 
+  factory :student_user, class: User do
+    email { 'st123456@ait.asia' }
+    password { 'testpassword' }
+    is_student { true }
+    confirmed_at { 1.day.ago }
+  end
+
   factory :project do
     name { 'My favorite project' }
     url { 'http://somewhere.com' }

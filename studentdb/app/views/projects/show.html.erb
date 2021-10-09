@@ -33,6 +33,14 @@
       <% else %>
         <p class="mb-4"><i>None added yet</i></p>
       <% end %>
+      <% if current_user && current_user.is_student %>
+        <%= link_to 'Add self to project', '#', class: "btn btn-primary",
+                    role: "button", id: "add-self-to-project",
+                    data: {
+                      'path': add_student_to_project_path(@project),
+                      'student-id': current_user.studentid
+                    } %>
+      <% end %>
     </div>
   </div>
 </div>

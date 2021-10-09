@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Policy for admin access
-class SitePolicy
+class SitePolicy < ApplicationPolicy
   attr_reader :user
 
   def initialize(user, _)

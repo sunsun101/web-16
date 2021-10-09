@@ -45,6 +45,22 @@ var setProjectCallbacks = function () {
     }
   });
   setStudentSelector();
+  const addSelfButton = document.querySelector('#add-self-to-project');
+  if (addSelfButton) {
+    addSelfButton.onclick = () => {
+      const { path, studentId } = addSelfButton.dataset;
+      const token = document.getElementsByName("csrf-token")[0].content;
+      fetch(path, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': token
+        },
+        body: JSON.stringify({ student: { studentid: studentId }})
+      });
+      return false;
+    };
+  }
 }
 
 document.addEventListener('turbolinks:load', () => {
