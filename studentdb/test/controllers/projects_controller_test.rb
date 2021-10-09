@@ -50,15 +50,21 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update project' do
-    sign_in users(:two)
+    sign_in users(:one)
     patch project_url(@project), params: { project: { name: @project.name, url: @project.url } }
     assert_redirected_to project_url(@project)
   end
 
-  test 'should fail to update project' do
+  test 'should authorize update project' do
     sign_in users(:two)
     patch project_url(@project), params: { project: { name: '', url: '' } }
-    assert_redirected_to project_url(@project)
+    assert_redirected_to root_path
+  end
+
+  test 'should validate update project' do
+    sign_in users(:one)
+    patch project_url(@project), params: { project: { name: '', url: '' } }
+    assert_response :unprocessable_entity
   end
 
   test 'should destroy project' do
@@ -75,9 +81,29 @@ class ProjectsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'should authorize student update' do
+  test 'should authorize student project update' do
     sign_in users(:student)
     patch project_url(@project), params: { project: { name: @project.name, url: @project.url } }
+    assert_redirected_to root_path
+  end
+
+  test 'should add self to project' do
+    sign_in users(:student)
+    post add_student_to_project_path(@project),
+         params: { student: { studentid: '123457' }, id: @project.id }
     assert_redirected_to project_path(@project)
+  end
+
+  test 'should authorize add self to project' do
+    sign_in users(:student)
+    post add_student_to_project_path(@project),
+         params: { student: { studentid: '123456' }, id: @project.id }
+    assert_redirected_to root_url
+  end
+
+  test 'should validate add self to project' do
+    sign_in users(:student2)
+    post add_student_to_project_path(@project),
+         params: { student: { studentid: '123458' }, id: @project.id }
   end
 end

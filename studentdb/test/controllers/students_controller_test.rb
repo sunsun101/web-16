@@ -18,7 +18,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create project' do
     assert_difference('Student.count') do
-      post students_url, params: { student: { name: 'Jane Student', studentid: '123459' } }
+      post students_url, params: { student: { name: 'Jane Student', studentid: '123451' } }
     end
     assert_redirected_to student_url(Student.last)
   end
