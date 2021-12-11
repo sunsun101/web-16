@@ -1,0 +1,93 @@
+<%= javascript_pack_tag 'admin' %>
+<table class= "table table-striped table-hover" id="users_table">
+  <thead>
+    <tr style="text-align:center">
+      <th>Email</th>
+      <th>Is Admin?</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="table_body">
+  </tbody>
+</table>
+<div class="modal fade" id='editModal' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Email: </h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" ></button>
+      </div>
+      <div class="modal-body">
+        <%= render 'edit_users' %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function delete_user(id) {
+  console.log("Id ===>", id);
+  // var params = JSON.stringify({ id: id });
+  // $.get("/users/destroy", params, function (data) {});
+  $.ajax({
+    url: "/users/destroy?id=" + id,
+    type: "DELETE",
+    success: function (result) {
+      // Do something with the result
+    },
+  });
+  }
+  
+  function setUsersCallback() {
+  // var params = '{"field1": "value1", "field2: "value2"}';
+  $.get("/site/users", function (data) {
+    let parsed_data = JSON.parse(data);
+    let table_body = document.getElementById("table_body");
+    const fields = { 0: "email", 1: "is_admin" };
+    parsed_data.forEach((element) => {
+      var tr = document.createElement("tr");
+  
+      for (var j = 0; j < 3; j++) {
+        // if (i == 2 && j == 1) {
+        //   break;
+        // } else {
+        var td = document.createElement("td");
+        if (j == 2) {
+          var edit_button = document.createElement("input");
+          edit_button.type = "button";
+          edit_button.className = "btn btn-primary";
+          edit_button.value = "Edit";
+          edit_button.setAttribute("data-mdb-target", "#editModal");
+          edit_button.setAttribute("data-mdb-toggle", "modal");
+          edit_button.setAttribute("id", "myModal_" + element.id);
+          edit_button.onclick = (function () {
+            return function () {
+              $("#email").val(element.email);
+              $("#is_admin").prop("checked", element.is_admin ? true : false);
+              $("#user_id").val(element.id);
+            };
+          })();
+          var delete_button = document.createElement("input");
+          delete_button.type = "button";
+          delete_button.className = "btn btn-danger";
+          delete_button.value = "Delete";
+          delete_button.onclick = (function () {
+            return function () {
+              delete_user(element.id);
+            };
+          })();
+          td.appendChild(edit_button);
+          td.appendChild(delete_button);
+        } else {
+          td.innerText = element[fields[j]];
+  
+          // i == 1 && j == 1 ? td.setAttribute("rowSpan", "2") : null;
+        }
+  
+        tr.appendChild(td);
+      }
+      // }
+      table_body.appendChild(tr);
+    });
+  });
+  }
+</script>
